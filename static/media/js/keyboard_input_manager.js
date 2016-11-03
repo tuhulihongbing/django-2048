@@ -61,10 +61,14 @@ KeyboardInputManager.prototype.listen = function () {
         self.emit("move", mapped);
       }
     }
-
+    ga('send', 'event', 'PC', 'keydown', 'Key-'+event.key);
+	_hmt.push(['_trackEvent', 'PC', 'key-'+event.key]);
+	window.console.log('Key-'+event.key);
     // R key restarts the game
     if (!modifiers && event.which === 82) {
       self.restart.call(self, event);
+	//  ga('send', 'event', 'PC', 'Restart', 'Key-R');
+	//  window.console.log(event.key);
     }
   });
 
@@ -123,6 +127,11 @@ KeyboardInputManager.prototype.listen = function () {
     if (Math.max(absDx, absDy) > 10) {
       // (right : left) : (down : up)
       self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+	  //window.console.log(absDx > absDy);
+	  var direction = absDx > absDy ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up");
+	  ga('send', 'event', 'h5', 'move', 'Move-'+direction);
+	  _hmt.push(['_trackEvent', 'h5', 'Move-'+direction]);
+	  window.console.log(direction);
     }
   });
 };
