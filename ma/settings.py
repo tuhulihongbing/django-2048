@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     't2048',
+    'trains',
 ]
 
 MIDDLEWARE_CLASSES = [
