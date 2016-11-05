@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from t2048.views import show_2048
+from trains.views import trains_search
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^2048', show_2048),
+    url(r'^$', show_2048),
+    url(r'^trains', trains_search),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

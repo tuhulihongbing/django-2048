@@ -6,47 +6,52 @@
 
 {% block content %}
 
-<table style=" ">
-<tr>
-<td style="background:url(/static/media/images/searchico.gif) no-repeat top left;">
-<div align="center"></div>
-<form  id="formSearch">
-<table cellpadding="3" cellspacing="0" border="0" align="center" >
-<tr align="center" style="display:none">
-        <td><b>
-日&nbsp;&nbsp;&nbsp;期：</b></td><td width="400" align="left">
-
-<input type="text" value="2016-11-05" name="txt2" id="txt2" style="width:145px;" onFocus="c.showMoreDay = false;c.show(this);"/>
-<div style="height:300px;display:none"></div></td>
-      </tr>
-      <tr><td><b>查询类型：</b></td><td align="left">
-	  <input type="radio" name="cxlx" id="cxlx0" checked value="0" tabindex="1" onkeypress="keypressCxlx();">到达&nbsp;&nbsp;&nbsp;&nbsp;
-	  <input type="radio" name="cxlx" id="cxlx1" value="1" tabindex="2" onkeypress="keypressCxlx();">出发</td></tr>
-<tr align="center"><td><b>车&nbsp;&nbsp;&nbsp;站：</b></td>
-<td id="chezhan" align="left">
-<input type="text" tabindex="3" name="chezhanIn" id="chezhanInId"   onkeyup="showsta(this,selsta,lay);txtObj=this;clearCC();" onkeypress="keypressCZ();"  />
-<input type="hidden" name="chezhanEn" id="chezhanEn" /><br /><b><label id="station2Id" ></label></b></td></tr>
-<tr align="center"><td><b>车&nbsp;&nbsp;&nbsp;次：</b></td><td align="left"><table border="0" cellpadding="0" cellspacing="0"><tr><td>
-<input tabindex="4"  type="text" name="chechiIn" id="chechiInId" onkeypress="keypressCC();"  />
-</td><td ><a href="#" onClick="helpcc()"><img src="images/go.gif" border=0></a></td>
-<td><b><label id="from2Id" style="color:red"></label></b></td>
-</tr></table>
-
-    </td>
-</tr>
-
-        </td>
-          </tr>
-      </table>
-
-
-<tr align="center"><td colspan="2">
-<input type="button" tabindex="6" class="btn1" value=" 查 询 " name="chaxunBtn" id="chaxunBtnId" onClick="chaxunFun()" />
-
-</td></tr>
-
-</table>
+<div style="background:url(/static/media/images/searchico.gif) no-repeat top left;height: 200px;">
+<form id="trains_form" >
+    {% csrf_token %}
+<label>请输入车次：
+<input type="text" name="checiIn"   /></label>
+<button type="button" value="提交" onclick="DoSubmit();">Click Me!</button>
 </form>
+    <script src="/static/media/js/jquery-3.1.1.min.js"></script>
+    <script>
+        function DoSubmit(){
+            var input_dict = {};
+            $('input').each(function(){
+                var v = $(this).val();
+                var n = $(this).attr('name');
+                input_dict[n] = v;
+            });
+            if( input_dict["checiIn"]=="")
+                alert("请输入查询车次！");
+            else
+            $.ajax({
+                url: '/trains/',
+                type: 'POST',
+                data: input_dict,
+                dataType:'json',
+                success: function (result) {
+                    var datass = result;
+                    alert(datass.trains);
+                    if (result.status) {
+{#                        location.href = '/2048';#}
+                        console.log(location.href);
+                    }
+                    else {
+                        $.each(result.message, function (k,v) {
+                            var tag = document.createElement('span');
+                            tag.className = 'error-msg';
+                            tag.innerText = v[0].message;
+                            $('input[name="' + k + '"]').siblings('span').remove();
+                            $('input[name="' + k + '"]').after(tag);
+                        })
+                    }
+                }
+            })
+        }
+    </script>
+</div>
+
 
 
 
