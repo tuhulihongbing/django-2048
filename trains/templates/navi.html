@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("form").submit(function(e){
+      e.preventDefault();
+      DoSubmit();
+  });
+});
+</script>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header ">
+                <h2>
+                    <a class="navbar-brand" href="#">火车晚点查询</a>
+                </h2>
+                <form class="navbar-form navbar-right" >
+                            {% csrf_token %}
+                        <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入查询车次"   name="checiIn" id = "chezhanInId" >
+                            <span class="input-group-btn">
+                    <button type="button" class="btn btn-success" onclick="DoSubmit();">查询</button></span></div>
+            </form>
+
+    </div>
+
+  </div><!-- /.container-fluid -->
+</nav>
